@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useState } from "react";
+import AddStudent from "./components/AddStudent/AddStudent";
+import StudentForm from "./components/StudentForm/StudentForm";
+import StudentProvider from "./components/contexts/StudentProvider";
+import StudentDetails from "./components/StudentDetails/StudentDetails";
+import FormProvider from "./components/contexts/FormProvider";
+import FormContext from "./components/contexts/form-context";
 
-function App() {
+const App = () => {
+  // const ctx = useContext(FormContext);
+  const [isAdding, setIsAdding] = useState(false); // Initialize isAdding as false
+
+  const onAddStudentsHandler = (data) => {
+    setIsAdding(data);
+    // Update isAdding based on the received dataa
+    // console.log(ctx.formOpen);
+    // ctx.openForm(data);
+  };
+
+  const onCloseHandler = () => {
+    setIsAdding(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StudentProvider>
+      <FormProvider>
+        <AddStudent onAddStudents={onAddStudentsHandler} />
+        {isAdding && <StudentForm onClose={onCloseHandler} />}{" "}
+        {/* Pass onClose handler */}
+        <StudentDetails />
+      </FormProvider>
+    </StudentProvider>
   );
-}
+};
 
 export default App;
